@@ -1,0 +1,14 @@
+<div class="header">
+  <h1 mat-dialog-title>{{ data.title }}</h1>
+</div>
+<div mat-dialog-content>
+  <p class="dialog-message">{{ data.content }}</p>
+  <shared-form 
+    [formProps]="data.formProps"
+    (updateForm)="getFormValues($event)"
+  ></shared-form>
+</div>
+<div mat-dialog-actions>
+  <button class="btn btn-cancel" mat-button (click)="cancel()">Cancel</button>
+  <button class="btn" mat-raised-button color="primary" (click)="confirm()">Confirm</button>
+</div>

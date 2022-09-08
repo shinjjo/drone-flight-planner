@@ -1,0 +1,13 @@
+<div *ngFor="let config of configs" class="map-load-item-wrapper">
+	<mat-card class="map-load-item">
+		<mat-card-title-group>
+			<mat-card-title>{{ config.name }}</mat-card-title>
+			<mat-card-subtitle>Last Updated: {{ config.lastUpdated | date: 'yyyy-MM-dd HH:mm:SS' }}</mat-card-subtitle>    
+		</mat-card-title-group>
+		<mat-card-content>{{ config.description }}</mat-card-content>
+		<mat-card-actions>
+			<button mat-stroked-button (click)="loadConfig(config.id!)">Load</button>
+			<!-- <button mat-stroked-button (click)="deleteConfig(config.id!)">Delete</button> -->
+		</mat-card-actions>
+	</mat-card>
+</div>

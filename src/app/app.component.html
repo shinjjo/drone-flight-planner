@@ -1,0 +1,37 @@
+<ng-container class="app-container">
+	<mat-drawer-container cdkScrollable class="app-warpper">
+    <mat-drawer #drawer mode="side">
+      <load-panel (changeConfig)="changeConfig($event)"></load-panel>
+    </mat-drawer>
+  
+    <div class="main-button-wrapper">
+      <button 
+        class="load-item-button" 
+        mat-raised-button 
+        color="primary"
+        (click)="drawer.toggle()">
+        Load
+      </button>
+      <button 
+        class="load-item-button" 
+        mat-raised-button 
+        (click)="save()">
+        Save
+      </button>
+      <button 
+        class="load-item-button" 
+        mat-raised-button
+        (click)="createNew()">
+        New
+      </button>
+    </div>
+    <h3 class="item-map-name-text">
+      {{ flightMapConfig?.name }}
+    </h3>
+    <app-map
+      #appMap
+      class="map"
+      [flightMapConfig]="flightMapConfig"
+  ></app-map>
+  </mat-drawer-container>
+</ng-container>

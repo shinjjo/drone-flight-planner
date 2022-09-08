@@ -1,0 +1,8 @@
+<form [formGroup]="forms">
+  <section *ngFor="let prop of formProps">
+		<mat-form-field>
+			<mat-label>{{ prop.name }}</mat-label>
+			<input matInput [placeholder]="prop.name" type="text" [formControlName]="prop.name">
+		</mat-form-field>
+  </section>
+</form>
