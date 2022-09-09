@@ -12,13 +12,12 @@ import VectorLayer from 'ol/layer/Vector';
 import Projection from 'ol/proj/Projection';
 import {register}  from 'ol/proj/proj4';
 import {get } from 'ol/proj'
-import TileLayer from 'ol/layer/Tile';
-import OSM from 'ol/source/OSM';
 import VectorSource from 'ol/source/Vector';
 import { DrawControl } from './controls/DrawControl';
 import { FlightMapConfig } from 'src/services/map-config.service';
 import { mapVariables } from 'src/assets/config';
 import Geometry from 'ol/geom/Geometry';
+import { styleFunction } from './controls/FeatureStyle';
 
 @Component({
   selector: 'app-map',
@@ -67,7 +66,7 @@ export class OlMapComponent implements AfterViewInit, OnChanges {
       projection
     });
 
-    this.vectorLayer = new VectorLayer({ source: this.vectorSource });
+    this.vectorLayer = new VectorLayer({ source: this.vectorSource, style: styleFunction });
     this.map = new Map({
       layers: [mapVariables.raster, this.vectorLayer],
       target: 'map',
@@ -92,7 +91,7 @@ export class OlMapComponent implements AfterViewInit, OnChanges {
       this.vectorSource.addFeatures(this.flightMapConfig?.vectorLayer);
     } 
 
-    this.vectorLayer = new VectorLayer({ source: this.vectorSource });
+    this.vectorLayer = new VectorLayer({ source: this.vectorSource, style: styleFunction });
     this.map.getView().setCenter(this.flightMapConfig?.center || mapVariables.center);
     this.map.getView().setZoom(this.flightMapConfig?.zoom || mapVariables.zoom);
     this.map.setLayers([mapVariables.raster, this.vectorLayer]);

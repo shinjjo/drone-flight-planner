@@ -76,7 +76,6 @@ export class FlightMapConfigService {
 
 	deleteMapConfigById = (id: string) => {
 		localStorage.removeItem(id);
-		console.log('id', id)
 		const idCollection = this.getIdCollection();
 		localStorage.setItem('id-collection', JSON.stringify(idCollection.filter(id => id !== id)));
 	}

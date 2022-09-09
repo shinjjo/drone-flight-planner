@@ -10,7 +10,7 @@
         mat-raised-button 
         color="primary"
         (click)="drawer.toggle()">
-        Load
+        {{ drawer.opened ? 'Close' : 'Open ' }}
       </button>
       <button 
         class="load-item-button" 

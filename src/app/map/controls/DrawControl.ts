@@ -48,7 +48,7 @@ export class DrawControl extends Control {
   toggleDrawStringLine() {    
     this.isActivated ? 
       this.map.getInteractions().forEach(interaction => { if(interaction instanceof Draw) this.map.removeInteraction(interaction)}) : 
-      this.map.addInteraction(new Draw({ type: 'LineString', source: this.source, stopClick: true }));
+      this.map.addInteraction(new Draw({ type: 'MultiLineString', source: this.source, stopClick: true }));
     
     this.isActivated = !this.isActivated;
   }

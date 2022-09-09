@@ -14,11 +14,10 @@ import { mapVariables } from 'src/assets/config';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnInit {
-  title = 'drone-flight-planner';
-  showFiller = false;
-  opened = false;
-  flightMapConfig?: FlightMapConfig;
+
   @ViewChild('appMap') mapComponent!: OlMapComponent;
+
+  flightMapConfig?: FlightMapConfig;
 
   constructor(
     private configService: FlightMapConfigService,
@@ -80,7 +79,6 @@ export class AppComponent implements OnInit {
 
   changeConfig = (config?: FlightMapConfig) => { 
     this.flightMapConfig = config;
-    console.log('confi', config)
     this.cdr.markForCheck();
   }
 }
