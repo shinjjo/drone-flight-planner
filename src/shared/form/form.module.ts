@@ -6,16 +6,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { SharedFormComponent } from './form.component';
 
 @NgModule({
-    declarations: [
-      SharedFormComponent
-    ],
-    imports: [
-      CommonModule,
-			FormsModule,
-			ReactiveFormsModule,
-      MatFormFieldModule,
-			MatInputModule,
-    ],
-    exports: [SharedFormComponent],
-  })
-  export class SharedFormModule { }
+  declarations: [SharedFormComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule
+  ],
+  exports: [SharedFormComponent]
+})
+export class SharedFormModule {}

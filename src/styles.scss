@@ -1,11 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 @import '../node_modules/ol/ol.css';
 @import '~@angular/cdk/overlay-prebuilt.css';
-@import "https://fonts.googleapis.com/icon?family=Material+Icons";
+@import 'https://fonts.googleapis.com/icon?family=Material+Icons';
 @import '@angular/material/prebuilt-themes/indigo-pink.css';
 @import 'assets/drawer-theme';
 
 * {
-    margin: 0;
-    font-family: 'Roboto';
+  margin: 0;
+  font-family: 'Roboto', 'sans-serif';
 }

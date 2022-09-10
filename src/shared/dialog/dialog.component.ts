@@ -1,15 +1,17 @@
 import { ChangeDetectionStrategy, Component, Inject } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FormProps } from "../form/form.component";
+import { SharedDialogFormProperty } from "src/models/shared-dialog";
 
 /**
- * @title Dialog title
- * @content Dialog contnet
+ * @title Dialog title text
+ * @description Dialog description text
+ * @formProps Form properties to display in the dialog: "name", "type", "required", "value"(optional)
  */
 
 @Component({
   selector: 'shared-dialog',
   templateUrl: './dialog.component.html',
+  styleUrls: ['./dialog.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SharedDialogComponent {
@@ -19,8 +21,8 @@ export class SharedDialogComponent {
 	constructor(
     @Inject(MAT_DIALOG_DATA) public data: {
       title: string,
-      content: string,
-      formProps: FormProps[],
+      description?: string,
+      formProps?: SharedDialogFormProperty[]
     }, 
     private dialogRef: MatDialogRef<SharedDialogComponent>
   ) {}
@@ -29,9 +31,13 @@ export class SharedDialogComponent {
     this.close(false)
   }
 
-  close = (value: any) => { this.dialogRef.close(value) }
+  close(value: any) { 
+    this.dialogRef.close(value) 
+  }
 
-  confirm = () => { this.close(this.formValue) }
+  confirm() { 
+    this.close(this.formValue) 
+  }
 
   getFormValues(formValue: any){
     this.formValue = formValue

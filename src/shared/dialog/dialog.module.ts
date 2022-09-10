@@ -3,24 +3,21 @@ import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { SharedFormComponent } from '../form/form.component';
 import { SharedFormModule } from '../form/form.module';
 import { SharedDialogComponent } from './dialog.component';
 import { SharedDialogService } from './dialog.service';
 
 @NgModule({
-    declarations: [
-      SharedDialogComponent,
-    ],
-    imports: [
-      CommonModule,
-      MatDialogModule,
-      MatButtonModule,
-      MatFormFieldModule,
-      SharedFormModule,
-    ],
-    exports: [SharedDialogComponent],
-    providers: [SharedDialogService],
-    entryComponents: [SharedDialogComponent]
-  })
-  export class SharedDialogModule { }
+  declarations: [SharedDialogComponent],
+  imports: [
+    CommonModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    SharedFormModule
+  ],
+  exports: [SharedDialogComponent],
+  providers: [SharedDialogService],
+  entryComponents: [SharedDialogComponent]
+})
+export class SharedDialogModule {}

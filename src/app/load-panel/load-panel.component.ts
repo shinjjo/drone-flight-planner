@@ -1,42 +1,57 @@
-import { EventEmitter, Output, ChangeDetectorRef } from "@angular/core";
-import { ChangeDetectionStrategy, Component, OnInit } from "@angular/core";
-import { FlightMapConfig, FlightMapConfigService } from "src/services/map-config.service";
+import { EventEmitter, Output, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { filter, Observable } from 'rxjs';
+import { FlightPlanDto } from 'src/models/flight-map';
+import { FlightPlanService } from 'src/services/flight-plan.service';
+import { FlightPlanStore } from 'src/services/flight-plan.store';
+import { SharedDialogService } from 'src/shared/dialog/dialog.service';
 
 @Component({
   selector: 'load-panel',
   templateUrl: './load-panel.component.html',
-	styleUrls: ['./load-panel.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrls: ['./load-panel.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoadPanelComponent implements OnInit {
-	configs!: FlightMapConfig[]
-		
-	@Output() changeConfig = new EventEmitter<FlightMapConfig>();
-	@Output() renewConfig = new EventEmitter();
+  constructor(
+    private planService: FlightPlanService,
+    private planStore: FlightPlanStore,
+    private snackBar: MatSnackBar,
+    private dialogService: SharedDialogService
+  ) {}
 
-	constructor(
-		private configService: FlightMapConfigService,
-    	private cdr: ChangeDetectorRef,
-	){}
+  flightPlans$: Observable<FlightPlanDto[]> | undefined;
 
-	ngOnInit(): void {
-    this.renewConfigs()
+  ngOnInit(): void {
+    this.fetchPlans();
+  }
 
-	}
+  private fetchPlans = () => {
+    const plans = this.planService.getFlightPlans();
+    this.planStore.setFlightPlans(plans);
+    this.flightPlans$ = this.planStore.plansState$;
+  };
 
-	loadConfig = (id: string) => { 
-		const config = this.configService.getMapConfigById(id);
-		this.changeConfig.emit(config);
-	}
+  loadPlan = (id: string) => {
+    const plan = this.planService.getFlightPlanById(id);
+    this.planStore.setFlightPlan(plan);
+  };
 
-	deleteConfig = (id: string) => {
-		this.configService.deleteMapConfigById(id);
-		this.changeConfig.emit();
-	}
-
-	renewConfigs = () => {
-		this.configs = this.configService.getMapConfigs();
-		this.cdr.markForCheck();
-		this.renewConfig.emit();
-	}
+  deletePlan = (id: string) => {
+    this.dialogService.open({
+      title: 'Delete flight plan',
+      description: 'Are you sure you want to remove the flight plan?'
+    });
+    this.dialogService.confirmed().subscribe((res) => {
+      if (res !== false) {
+        if (id === this.planStore.flightPlanDto.id) {
+          this.planStore.cleanFlightPlan();
+        }
+        this.planService.deletePlanById(id);
+        this.fetchPlans();
+        this.snackBar.open('The flight plan has been removed', 'Close');
+      }
+    });
+  };
 }

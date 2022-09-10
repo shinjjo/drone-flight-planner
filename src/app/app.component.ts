@@ -1,84 +1,121 @@
-import { ChangeDetectorRef, ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
-import { FlightMapConfig, FlightMapConfigService, FlightMapConfigStore } from 'src/services/map-config.service';
+import {
+  ChangeDetectorRef,
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  ViewChild
+} from '@angular/core';
+import { FlightPlanService } from 'src/services/flight-plan.service';
 import { OlMapComponent } from './map/app-map.component';
 import { GeoJSON } from 'ol/format';
 import { Geometry } from 'ol/geom';
 import { Feature } from 'ol';
 import { SharedDialogService } from 'src/shared/dialog/dialog.service';
-import { mapVariables } from 'src/assets/config';
+import {
+  FlightPlanDto,
+  FlightPlanJson,
+  FlightPlanSaveForm
+} from 'src/models/flight-map';
+import { FlightPlanStore } from 'src/services/flight-plan.store';
+import { filter, finalize, map, Observable, tap } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SharedDialogOptions } from 'src/models/shared-dialog';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent implements OnInit {
-
   @ViewChild('appMap') mapComponent!: OlMapComponent;
 
-  flightMapConfig?: FlightMapConfig;
+  flightPlan$!: Observable<FlightPlanDto>;
 
   constructor(
-    private configService: FlightMapConfigService,
+    private planService: FlightPlanService,
+    private planStore: FlightPlanStore,
     private dialogService: SharedDialogService,
-    private cdr: ChangeDetectorRef,
-  ){}
+    private snackBar: MatSnackBar,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
-    // this.changeConfig(this.configService.getLatestConfig());
+    this.flightPlan$ = this.planStore.planState$;
   }
 
-  save(){
-    const options = {
+  private createDto(formValue: FlightPlanSaveForm): FlightPlanDto {
+    console.log('formvalue', formValue);
+    return {
+      id: this.planStore.flightPlanDto.id,
+      name: formValue.name,
+      description: formValue.description,
+      lastUpdated: new Date(),
+      vectorLayer: this.mapComponent.vectorLayer
+        .getSource()
+        ?.getFeatures() as Feature<Geometry>[],
+      center: this.mapComponent.map.getView().getCenter() as number[],
+      zoom: this.mapComponent.map.getView().getZoom() as number
+    };
+  }
+
+  private createJson(planDto: FlightPlanDto): FlightPlanJson {
+    return {
+      ...planDto,
+      lastUpdated: planDto.lastUpdated.toISOString(),
+      vectorLayer: new GeoJSON().writeFeatures(
+        planDto.vectorLayer as Feature<Geometry>[]
+      ),
+      center: JSON.stringify(planDto.center),
+      zoom: JSON.stringify(planDto.zoom)
+    };
+  }
+
+  save(): void {
+    const options: SharedDialogOptions = {
       title: 'Save flight plan',
-      content: 'This will save flight plan',
       formProps: [
         {
           name: 'name',
-          type: 'string',
           required: true,
+          value: this.planStore.flightPlanDto.name || ''
         },
         {
           name: 'description',
-          type: 'string',
           required: false,
+          value: this.planStore.flightPlanDto.description || ''
         }
       ]
-    }
+    };
 
     this.dialogService.open(options);
-    this.dialogService.confirmed().subscribe(formValue => {
-      if (formValue) {
-        const configToSave: FlightMapConfigStore = {
-          id: this.mapComponent.flightMapConfig?.id,
-          name: formValue.name,
-          description: formValue.description,
-          lastUpdated: new Date().toISOString(),
-          vectorLayer: new GeoJSON().writeFeatures(this.mapComponent.vectorLayer.getSource()?.getFeatures() as Feature<Geometry>[]),
-          center: JSON.stringify(this.mapComponent.map.getView().getCenter()),
-          zoom: JSON.stringify(this.mapComponent.map.getView().getZoom())
-        }
-        this.configService.saveMapConfig(configToSave);
-
+    this.dialogService
+      .confirmed()
+      .pipe(
+        tap((d) => console.log(' ddd', d)),
+        filter((formValue) => typeof formValue !== 'boolean'),
+        map((formValue) => this.createDto(formValue)),
+        tap((planDto: FlightPlanDto) => {
+          this.planStore.setFlightPlan(planDto);
+        }),
+        finalize(() =>
+          this.planStore.setFlightPlans(this.planService.getFlightPlans())
+        )
+      )
+      .subscribe((planDto: FlightPlanDto) => {
+        const configToSave: FlightPlanJson = this.createJson(planDto);
+        this.planService.saveFlightPlan(configToSave);
+        this.snackBar.open(
+          `${configToSave.name} has been saved successfully`,
+          'close'
+        );
         this.cdr.markForCheck();
-      }
-    })
+      });
   }
 
-  createNew(){
-    const config = {
-      name: '',
-      lastUpdated: new Date(),
-      center: mapVariables.center,
-      zoom: mapVariables.zoom
-    } as FlightMapConfig;
-    this.changeConfig(config);
-    this.cdr.markForCheck();
-  }
-
-  changeConfig = (config?: FlightMapConfig) => { 
-    this.flightMapConfig = config;
+  createNew(): void {
+    this.planStore.cleanFlightPlan();
+    this.flightPlan$ = this.planStore.planState$;
     this.cdr.markForCheck();
   }
 }

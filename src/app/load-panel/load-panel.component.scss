@@ -1,8 +1,26 @@
-.map-load-item {
-    margin: 5px 0;
+.plan-load-item {
+  margin: 5px 0;
 }
 
-.map-load-item-wrapper {
-    max-width: 300px;
-    margin: 10px;
+.plan-load-panel {
+  max-width: 300px;
+  margin: 10px;
+}
+
+.plan-load-panel-header {
+  padding: 10px;
+  max-width: 300px;
+  text-align: center;
+  align-items: center;
+  line-height: 1.5;
+  color: #444;
+}
+
+.plan-load-panel-no-plan {
+  text-align: center;
+}
+
+.plan-load-item-action-wrapper {
+  display: flex;
+  justify-content: space-between;
 }

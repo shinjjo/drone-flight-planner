@@ -1,13 +1,26 @@
-<div *ngFor="let config of configs" class="map-load-item-wrapper">
-	<mat-card class="map-load-item">
-		<mat-card-title-group>
-			<mat-card-title>{{ config.name }}</mat-card-title>
-			<mat-card-subtitle>Last Updated: {{ config.lastUpdated | date: 'yyyy-MM-dd HH:mm:SS' }}</mat-card-subtitle>    
-		</mat-card-title-group>
-		<mat-card-content>{{ config.description }}</mat-card-content>
-		<mat-card-actions>
-			<button mat-stroked-button (click)="loadConfig(config.id!)">Load</button>
-			<!-- <button mat-stroked-button (click)="deleteConfig(config.id!)">Delete</button> -->
-		</mat-card-actions>
-	</mat-card>
+<h1 class="plan-load-panel-header">Drone flight plan</h1>
+<div *ngFor="let plan of flightPlans$ | async" class="plan-load-panel">
+  <mat-card class="plan-load-item">
+    <mat-card-title-group>
+      <mat-card-title>{{ plan.name }}</mat-card-title>
+      <mat-card-subtitle
+        >Last Updated:
+        {{ plan.lastUpdated | date: 'yyyy-MM-dd HH:mm:SS' }}</mat-card-subtitle
+      >
+    </mat-card-title-group>
+    <mat-card-content>{{ plan.description }}</mat-card-content>
+    <mat-card-actions>
+      <section class="plan-load-item-action-wrapper">
+        <button mat-stroked-button color="Warn" (click)="deletePlan(plan.id!)">
+          Delete
+        </button>
+        <button mat-stroked-button color="Primary" (click)="loadPlan(plan.id!)">
+          Load
+        </button>
+      </section>
+    </mat-card-actions>
+  </mat-card>
 </div>
+<section *ngIf="!(flightPlans$ | async)" class="plan-load-panel-no-plan">
+  No flight plans
+</section>
