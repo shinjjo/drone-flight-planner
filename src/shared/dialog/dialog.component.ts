@@ -1,11 +1,11 @@
-import { ChangeDetectionStrategy, Component, Inject } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Inject, OnInit } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SharedDialogFormProperty } from "src/models/shared-dialog";
 
 /**
  * @title Dialog title text
  * @description Dialog description text
- * @formProps Form properties to display in the dialog: "name", "type", "required", "value"(optional)
+ * @formProps Form properties to display in the dialog: "name", "required", "value"(optional)
  */
 
 @Component({
@@ -14,7 +14,7 @@ import { SharedDialogFormProperty } from "src/models/shared-dialog";
   styleUrls: ['./dialog.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SharedDialogComponent {
+export class SharedDialogComponent implements OnInit {
 
   formValue: any;
 
@@ -27,6 +27,14 @@ export class SharedDialogComponent {
     private dialogRef: MatDialogRef<SharedDialogComponent>
   ) {}
 
+  ngOnInit(): void {
+    this.dialogRef.keydownEvents().subscribe(event => {
+      if (event.key === 'Escape') {
+        this.cancel();
+      }
+    });
+  }
+
   cancel() {
     this.close(false)
   }
@@ -36,7 +44,7 @@ export class SharedDialogComponent {
   }
 
   confirm() { 
-    this.close(this.formValue) 
+    this.close(this.formValue)
   }
 
   getFormValues(formValue: any){

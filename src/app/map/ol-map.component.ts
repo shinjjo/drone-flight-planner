@@ -5,37 +5,33 @@ import {
   Input,
   ChangeDetectorRef,
   ChangeDetectionStrategy,
-  OnChanges,
-  SimpleChanges,
-  OnInit
 } from '@angular/core';
-import { View, Map, Feature } from 'ol';
-import { Coordinate } from 'ol/coordinate';
+import { View, Map } from 'ol';
 import { ScaleLine, defaults as DefaultControls } from 'ol/control';
 import { defaults as DefaultInteractions } from 'ol/interaction';
-import proj4 from 'proj4';
 import VectorLayer from 'ol/layer/Vector';
 import Projection from 'ol/proj/Projection';
-import { register } from 'ol/proj/proj4';
 import { get } from 'ol/proj';
 import VectorSource from 'ol/source/Vector';
 import { DrawControl } from './controls/DrawControl';
 import Geometry from 'ol/geom/Geometry';
 import { styleFunction } from './controls/FeatureStyle';
-import { FlightPlanDto } from 'src/models/flight-map';
+import { FlightPlanDto } from 'src/models/flight-plan';
 import { mapVariables } from 'src/assets/config';
 import { FlightPlanStore } from 'src/services/flight-plan.store';
 
 @Component({
-  selector: 'app-map',
-  templateUrl: './app-map.component.html',
-  styleUrls: ['./app-map.component.scss'],
+  selector: 'ol-map',
+  templateUrl: './ol-map.component.html',
+  styleUrls: ['./ol-map.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class OlMapComponent implements AfterViewInit {
-  view!: View;
+
+  private vectorSource = new VectorSource({ wrapX: false });
+  private view!: View;
+
   map!: Map;
-  vectorSource = new VectorSource({ wrapX: false });
   vectorLayer!: VectorLayer<VectorSource<Geometry>>;
 
   constructor(
@@ -59,9 +55,6 @@ export class OlMapComponent implements AfterViewInit {
   }
 
   private initMap(): void {
-    proj4.defs(mapVariables.projectionName, mapVariables.projectionDefinition);
-    register(proj4);
-
     const projection = get(mapVariables.projectionName) as Projection;
     projection.setExtent(mapVariables.extent);
     this.view = new View({

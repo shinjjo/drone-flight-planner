@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { mapVariables } from 'src/assets/config';
-import { FlightPlanDto } from 'src/models/flight-map';
+import { FlightPlanDto } from 'src/models/flight-plan';
 
 @Injectable()
 export class FlightPlanStore {
@@ -29,14 +29,12 @@ export class FlightPlanStore {
     return this.flightPlans.getValue();
   }
 
-  setFlightPlan(flightPlan: FlightPlanDto): Observable<FlightPlanDto> {
+  setFlightPlan(flightPlan: FlightPlanDto): void {
     this.flightPlan.next(flightPlan);
-    return this.planState$;
   }
 
-  setFlightPlans(flightPlans: FlightPlanDto[]): Observable<FlightPlanDto[]> {
+  setFlightPlans(flightPlans: FlightPlanDto[]): void {
     this.flightPlans.next(flightPlans);
-    return this.plansState$;
   }
 
   cleanFlightPlan(): void {

@@ -6,7 +6,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { FlightPlanService } from 'src/services/flight-plan.service';
-import { OlMapComponent } from './map/app-map.component';
+import { OlMapComponent } from './map/ol-map.component';
 import { GeoJSON } from 'ol/format';
 import { Geometry } from 'ol/geom';
 import { Feature } from 'ol';
@@ -15,7 +15,7 @@ import {
   FlightPlanDto,
   FlightPlanJson,
   FlightPlanSaveForm
-} from 'src/models/flight-map';
+} from 'src/models/flight-plan';
 import { FlightPlanStore } from 'src/services/flight-plan.store';
 import { filter, finalize, map, Observable, tap } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -30,7 +30,7 @@ import { SharedDialogOptions } from 'src/models/shared-dialog';
 export class AppComponent implements OnInit {
   @ViewChild('appMap') mapComponent!: OlMapComponent;
 
-  flightPlan$!: Observable<FlightPlanDto>;
+  flightPlan$?: Observable<FlightPlanDto>;
 
   constructor(
     private planService: FlightPlanService,
@@ -45,11 +45,10 @@ export class AppComponent implements OnInit {
   }
 
   private createDto(formValue: FlightPlanSaveForm): FlightPlanDto {
-    console.log('formvalue', formValue);
     return {
       id: this.planStore.flightPlanDto.id,
-      name: formValue.name,
-      description: formValue.description,
+      name: formValue?.name,
+      description: formValue?.description,
       lastUpdated: new Date(),
       vectorLayer: this.mapComponent.vectorLayer
         .getSource()
@@ -92,8 +91,7 @@ export class AppComponent implements OnInit {
     this.dialogService
       .confirmed()
       .pipe(
-        tap((d) => console.log(' ddd', d)),
-        filter((formValue) => typeof formValue !== 'boolean'),
+        filter(formValue => typeof formValue !== 'boolean'),
         map((formValue) => this.createDto(formValue)),
         tap((planDto: FlightPlanDto) => {
           this.planStore.setFlightPlan(planDto);
@@ -107,7 +105,7 @@ export class AppComponent implements OnInit {
         this.planService.saveFlightPlan(configToSave);
         this.snackBar.open(
           `${configToSave.name} has been saved successfully`,
-          'close'
+          'Close'
         );
         this.cdr.markForCheck();
       });
@@ -115,7 +113,6 @@ export class AppComponent implements OnInit {
 
   createNew(): void {
     this.planStore.cleanFlightPlan();
-    this.flightPlan$ = this.planStore.planState$;
     this.cdr.markForCheck();
   }
 }

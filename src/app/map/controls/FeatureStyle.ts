@@ -19,7 +19,7 @@ export const styleFunction = (feature: any) => {
       new Style({
         geometry: new Point(coordinate),
         image: new Icon({
-          src: '../../../assets/images/red_point.png'
+          src: 'assets/images/red_point.png'
         })
       })
     );

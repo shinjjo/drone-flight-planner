@@ -5,7 +5,7 @@
 @import '@angular/material/prebuilt-themes/indigo-pink.css';
 @import 'assets/drawer-theme';
 
-* {
+html, body {
   margin: 0;
   font-family: 'Roboto', 'sans-serif';
 }

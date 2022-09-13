@@ -1,27 +1,43 @@
-# DroneFlightPlanner
+# Drone Flight Planner
 
+This project is an initiation of drone flight planner. Currently it supports basic features.
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.1.
+
+## Currently supporting features
+- Draw polylines with points 
+- Clean the current polylines 
+- Save flight plans with name, description, updated time and current coordinates (in local storage)
+- Load previously saved flight plans and display the plan name (from local storage)
+- Initiate the map
+- Confirmation dialog 
+- Snackbars
+
+## How to use
+### Draw drone flight plan 
+- Polyline button: Toggle drawing of polyline
+- Clear button: Clear current drawings
+
+### Save and load
+- Save button: Save a new or existing flight plan 
+- Load button: Load an existing flight plan
+- New button: Clear the current plan without saving and re-initiate the map
+
+## To support in the future
+- Map search feature
+- Display flight plan order
+- Configure initial coordinates
+- Configure initial zoom level
+
 
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
 ## Running unit tests
 
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-## Running end-to-end tests
+## Deployed version
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+[Link](https://shinjjo.github.io/drone-flight-planner)
 
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.

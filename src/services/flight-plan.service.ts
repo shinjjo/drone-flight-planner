@@ -1,7 +1,7 @@
 import * as uuid from 'uuid';
 import { Inject } from '@angular/core';
 import { GeoJSON } from 'ol/format';
-import { FlightPlanDto, FlightPlanJson } from 'src/models/flight-map';
+import { FlightPlanDto, FlightPlanJson } from 'src/models/flight-plan';
 
 /**
  *    A service provides functions to save / load flight map(s)
@@ -14,10 +14,11 @@ export class FlightPlanService {
   /**
    *    @description: get flight plan IDs as array
    */
-  private getIdCollection = (): string[] =>
-    JSON.parse(localStorage.getItem('id-collection') as string);
+  private getIdCollection(): string[] {
+		return JSON.parse(localStorage.getItem('id-collection') as string);
+	}
 
-  private savePlanId = (id: string) => {
+  private savePlanId(id: string){
     const idCollection = this.getIdCollection() || [];
     if (!idCollection.includes(id)) {
       idCollection.push(id);
@@ -25,7 +26,7 @@ export class FlightPlanService {
     localStorage.setItem('id-collection', JSON.stringify(idCollection));
   };
 
-  private parsePlan = (flightPlan: FlightPlanJson): FlightPlanDto => {
+  private parsePlan(flightPlan: FlightPlanJson): FlightPlanDto {
     return {
       ...flightPlan,
       vectorLayer: new GeoJSON().readFeatures(
@@ -40,7 +41,7 @@ export class FlightPlanService {
   /**
    *    @param planJson: id, name, description, last updated, vector layer, center, zoom
    */
-  saveFlightPlan = (planJson: FlightPlanJson) => {
+  saveFlightPlan(planJson: FlightPlanJson) {
     if (!planJson.id) {
       planJson.id = uuid.v4();
       localStorage.setItem(planJson.id as string, JSON.stringify(planJson));
@@ -53,13 +54,15 @@ export class FlightPlanService {
   /**
    *    @param id: Flight plan id
    */
-  getFlightPlanById = (id: string): FlightPlanDto =>
-    this.parsePlan(JSON.parse(localStorage.getItem(id) as string));
+  getFlightPlanById(id: string): FlightPlanDto {
+    return this.parsePlan(JSON.parse(localStorage.getItem(id) as string));
+	}
 
-  getFlightPlans = (): FlightPlanDto[] =>
-    this.getIdCollection()?.map((id) => this.getFlightPlanById(id));
+  getFlightPlans(): FlightPlanDto[] {
+    return this.getIdCollection()?.map((id) => this.getFlightPlanById(id));
+	}
 
-  deletePlanById = (id: string) => {
+  deletePlanById(id: string) {
     localStorage.removeItem(id);
     const idCollection = this.getIdCollection();
     localStorage.setItem(

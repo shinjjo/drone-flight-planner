@@ -6,23 +6,23 @@
 
     <div class="main-button-wrapper">
       <button
-        class="load-item-button"
+        class="load-item-button toggle"
         mat-raised-button
         color="primary"
         (click)="drawer.toggle()"
       >
         {{ drawer.opened ? 'Close' : 'Open ' }}
       </button>
-      <button class="load-item-button" mat-raised-button (click)="save()">
+      <button class="load-item-button save" mat-raised-button (click)="save()">
         Save
       </button>
-      <button class="load-item-button" mat-raised-button (click)="createNew()">
+      <button class="load-item-button create-new" mat-raised-button (click)="createNew()">
         New
       </button>
     </div>
-    <h3 class="item-map-name-text">
+    <h3 class="item-plan-name">
       {{ (flightPlan$ | async).name }}
     </h3>
-    <app-map #appMap class="map"></app-map>
+    <ol-map #appMap class="map"></ol-map>
   </mat-drawer-container>
 </ng-container>

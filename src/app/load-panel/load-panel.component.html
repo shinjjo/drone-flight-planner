@@ -11,16 +11,22 @@
     <mat-card-content>{{ plan.description }}</mat-card-content>
     <mat-card-actions>
       <section class="plan-load-item-action-wrapper">
-        <button mat-stroked-button color="Warn" (click)="deletePlan(plan.id!)">
+        <button 
+          class="plan-load-item-action-delete-button" 
+          mat-stroked-button color="Warn" 
+          (click)="deletePlan(plan.id!)">
           Delete
         </button>
-        <button mat-stroked-button color="Primary" (click)="loadPlan(plan.id!)">
+        <button 
+          class="plan-load-item-action-load-button" 
+          mat-stroked-button color="Primary" 
+          (click)="loadPlan(plan.id!)">
           Load
         </button>
       </section>
     </mat-card-actions>
   </mat-card>
 </div>
-<section *ngIf="!(flightPlans$ | async)" class="plan-load-panel-no-plan">
+<section *ngIf="(flightPlans$ | async)?.length === 0" class="plan-load-panel-no-plan">
   No flight plans
 </section>

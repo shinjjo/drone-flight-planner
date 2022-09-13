@@ -26,11 +26,12 @@ export class DrawControl extends Control {
 
     const drawButton = document.createElement('button');
     drawButton.title = 'Toggle poly line';
-    drawButton.className = 'draw-control';
+    drawButton.className = 'draw-button';
     drawButton.innerHTML = '<i class="material-icons">polyline</i>';
 
     const clearButton = document.createElement('button');
     clearButton.innerHTML = 'C';
+    clearButton.className = 'clear-button'
     clearButton.title = 'Clean up flight plan';
 
     const element = document.createElement('div');
@@ -43,11 +44,7 @@ export class DrawControl extends Control {
       target: options.target
     });
 
-    drawButton.addEventListener(
-      'click',
-      this.toggleDrawStringLine.bind(this),
-      false
-    );
+    drawButton.addEventListener('click', this.toggleDrawStringLine.bind(this));
     clearButton.addEventListener('click', this.clearStringLine.bind(this));
   }
 
@@ -64,7 +61,6 @@ export class DrawControl extends Control {
             stopClick: true
           })
         );
-
     this.isActivated = !this.isActivated;
   }
 

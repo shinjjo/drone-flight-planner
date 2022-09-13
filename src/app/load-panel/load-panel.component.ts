@@ -1,8 +1,7 @@
-import { EventEmitter, Output, ChangeDetectorRef } from '@angular/core';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { filter, Observable } from 'rxjs';
-import { FlightPlanDto } from 'src/models/flight-map';
+import { Observable } from 'rxjs';
+import { FlightPlanDto } from 'src/models/flight-plan';
 import { FlightPlanService } from 'src/services/flight-plan.service';
 import { FlightPlanStore } from 'src/services/flight-plan.store';
 import { SharedDialogService } from 'src/shared/dialog/dialog.service';
@@ -27,23 +26,23 @@ export class LoadPanelComponent implements OnInit {
     this.fetchPlans();
   }
 
-  private fetchPlans = () => {
+  private fetchPlans(): void {
     const plans = this.planService.getFlightPlans();
     this.planStore.setFlightPlans(plans);
     this.flightPlans$ = this.planStore.plansState$;
   };
 
-  loadPlan = (id: string) => {
+  loadPlan(id: string): void {
     const plan = this.planService.getFlightPlanById(id);
     this.planStore.setFlightPlan(plan);
   };
 
-  deletePlan = (id: string) => {
+  deletePlan(id: string): void {
     this.dialogService.open({
       title: 'Delete flight plan',
       description: 'Are you sure you want to remove the flight plan?'
     });
-    this.dialogService.confirmed().subscribe((res) => {
+    this.dialogService.confirmed().subscribe(res => {
       if (res !== false) {
         if (id === this.planStore.flightPlanDto.id) {
           this.planStore.cleanFlightPlan();
