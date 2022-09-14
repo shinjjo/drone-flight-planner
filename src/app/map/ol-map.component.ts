@@ -34,6 +34,8 @@ export class OlMapComponent implements AfterViewInit {
   map!: Map;
   vectorLayer!: VectorLayer<VectorSource<Geometry>>;
 
+  @Input() flightMapConfig?: FlightPlanDto;
+
   constructor(
     private zone: NgZone,
     private cdr: ChangeDetectorRef,
@@ -44,8 +46,6 @@ export class OlMapComponent implements AfterViewInit {
       style: styleFunction
     });
   }
-
-  @Input() flightMapConfig?: FlightPlanDto;
 
   ngAfterViewInit(): void {
     if (!this.map) {

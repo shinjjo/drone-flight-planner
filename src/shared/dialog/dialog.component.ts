@@ -5,7 +5,7 @@ import { SharedDialogFormProperty } from "src/models/shared-dialog";
 /**
  * @title Dialog title text
  * @description Dialog description text
- * @formProps Form properties to display in the dialog: "name", "required", "value"(optional)
+ * @formProps Form properties to display in the dialog: "name: string", "required: boolean", "value(optional): any"
  */
 
 @Component({

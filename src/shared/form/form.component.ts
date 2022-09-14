@@ -13,6 +13,7 @@ import {
 } from 'src/models/shared-dialog';
 
 /**
+ * Shared form component for dialog input
  * @title Dialog title
  * @content Dialog contnet
  */

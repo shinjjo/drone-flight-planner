@@ -39,7 +39,8 @@ export class FlightPlanService {
   };
 
   /**
-   *    @param planJson: id, name, description, last updated, vector layer, center, zoom
+   * @description: Jsonized flight plan data to save and load.    
+   * @param planJson: id, name, description, last updated, vector layer, center, zoom
    */
   saveFlightPlan(planJson: FlightPlanJson) {
     if (!planJson.id) {
@@ -58,6 +59,10 @@ export class FlightPlanService {
     return this.parsePlan(JSON.parse(localStorage.getItem(id) as string));
 	}
 
+
+  /**
+   *    @description get list of flight plans
+   */  
   getFlightPlans(): FlightPlanDto[] {
     return this.getIdCollection()?.map((id) => this.getFlightPlanById(id));
 	}

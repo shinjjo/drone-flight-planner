@@ -1,4 +1,4 @@
-# Drone Flight Planner
+# Drone Flight Planner [Link](https://shinjjo.github.io/drone-flight-planner)
 
 This project is an initiation of drone flight planner. Currently it supports basic features.
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.1.
@@ -12,6 +12,14 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 - Confirmation dialog 
 - Snackbars
 
+## Development server
+
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+
+## Running unit tests
+
+Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+
 ## How to use
 ### Draw drone flight plan 
 - Polyline button: Toggle drawing of polyline
@@ -22,22 +30,10 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 - Load button: Load an existing flight plan
 - New button: Clear the current plan without saving and re-initiate the map
 
-## To support in the future
-- Map search feature
+## Features to support in the future
+- Map search
 - Display flight plan order
+- Loading indicator
 - Configure initial coordinates
 - Configure initial zoom level
-
-
-## Development server
-
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Deployed version
-
-[Link](https://shinjjo.github.io/drone-flight-planner)
-
+- And many more
