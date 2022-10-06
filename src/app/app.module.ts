@@ -18,12 +18,14 @@ import { SharedDialogModule } from 'src/shared/dialog/dialog.module';
 import { LoadPanelComponent } from './load-panel/load-panel.component';
 import { FlightPlanService } from 'src/services/flight-plan.service';
 import { FlightPlanStore } from 'src/services/flight-plan.store';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
     AppComponent, 
+    HomeComponent,
     OlMapComponent, 
-    LoadPanelComponent
+    LoadPanelComponent,
   ],
   imports: [
     BrowserModule,

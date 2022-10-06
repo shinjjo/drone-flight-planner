@@ -31,6 +31,7 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 - New button: Clear the current plan without saving and re-initiate the map
 
 ## Features to support in the future
+- Routing with id
 - Map search
 - Display flight plan order
 - Loading indicator

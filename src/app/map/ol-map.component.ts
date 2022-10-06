@@ -21,7 +21,7 @@ import { mapVariables } from 'src/assets/config';
 import { FlightPlanStore } from 'src/services/flight-plan.store';
 
 @Component({
-  selector: 'ol-map',
+  selector: 'app-ol-map',
   templateUrl: './ol-map.component.html',
   styleUrls: ['./ol-map.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -39,7 +39,7 @@ export class OlMapComponent implements AfterViewInit {
   constructor(
     private zone: NgZone,
     private cdr: ChangeDetectorRef,
-    private planStore: FlightPlanStore
+    private planStore: FlightPlanStore,
   ) {
     this.vectorLayer = new VectorLayer({
       source: this.vectorSource,
@@ -51,6 +51,16 @@ export class OlMapComponent implements AfterViewInit {
     if (!this.map) {
       this.zone.runOutsideAngular(() => this.initMap());
     }
+
+    setTimeout(() => {
+      // Enables map loading after creating an new map
+      // https://stackoverflow.com/questions/65892423/openlayers-map-in-angular-is-blank-when-switching-components
+      if(this.map){
+        this.map.setTarget(null);
+        this.map.setTarget('map');
+      }
+    });
+
     this.loadMap();
   }
 
@@ -70,12 +80,11 @@ export class OlMapComponent implements AfterViewInit {
       controls: DefaultControls().extend([new ScaleLine({})]),
       interactions: DefaultInteractions()
     });
-
     this.addDrawControl();
   }
 
   private loadMap(): void {
-    this.planStore.planState$.subscribe((plan) => {
+    this.planStore.planState$.subscribe((plan: FlightPlanDto) => {
       this.vectorSource.clear();
       if (plan.vectorLayer) {
         this.vectorSource.addFeatures(plan.vectorLayer);
