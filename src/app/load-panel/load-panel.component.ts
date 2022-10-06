@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { FlightPlanDto } from 'src/models/flight-plan';
 import { FlightPlanService } from 'src/services/flight-plan.service';
@@ -17,7 +18,8 @@ export class LoadPanelComponent implements OnInit {
     private planService: FlightPlanService,
     private planStore: FlightPlanStore,
     private snackBar: MatSnackBar,
-    private dialogService: SharedDialogService
+    private dialogService: SharedDialogService,
+    private route: Router,
   ) {}
 
   flightPlans$: Observable<FlightPlanDto[]> | undefined;
@@ -33,8 +35,7 @@ export class LoadPanelComponent implements OnInit {
   };
 
   loadPlan(id: string): void {
-    const plan = this.planService.getFlightPlanById(id);
-    this.planStore.setFlightPlan(plan);
+    this.route.navigateByUrl(`plan/${id}`)
   };
 
   deletePlan(id: string): void {
